@@ -643,10 +643,15 @@ rt.setup({
   }
 })
 
+-- https://rust-analyzer.github.io/manual.html#nvim-lsp
 require 'lspconfig'.rust_analyzer.setup({
   on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
+      assist = {
+        expressionFillDefault = "todo",
+      },
       check = {
         command = "clippy"
       },
@@ -660,10 +665,24 @@ require 'lspconfig'.rust_analyzer.setup({
         buildScripts = {
           enable = true,
         },
+        features = "all",
       },
       procMacro = {
         enable = true
       },
+      completion = {
+        autoimport = {
+          enable = true,
+        }
+      },
+      inlay_hints = {
+        bindingModeHints = {
+          enable = true,
+        },
+        closureCaptureHints = {
+          enable = true,
+        },
+      }
     }
   }
 })
