@@ -236,7 +236,6 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  { 'rust-lang/rust-analyzer' },
   { 'nvim-lua/popup.nvim' },
   { 'navarasu/onedark.nvim' },
   { import = 'kickstart.plugins' },
@@ -498,17 +497,6 @@ end
 local servers = {
   clangd = { filetypes = { 'c', 'cpp', 'c++', '.h', '.hpp' } },
   gopls = { filetypes = { 'go' } },
-  rust_analyzer = {
-    filetypes = { 'rs', 'rust', 'toml' },
-    --root_dir = require('lspconfig.util').root_pattern('Cargo.toml'),
-    --cargo = {
-    --  allFeatures = true,
-    --},
-    --checkOnSave = {
-    --  command = "clippy",
-    --},
-    --check = 'clippy',
-  },
   pyright = { filetypes = { 'py', 'python' } },
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -647,10 +635,33 @@ rt.setup({
   },
   settings = {
     ['rust-analyzer'] = {
+      on_attach = on_attach,
       checkOnSave = {
         command = 'clippy',
       },
     },
+  }
+})
+
+require 'lspconfig'.rust_analyzer.setup({
+  on_attach = on_attach,
+  settings = {
+    ["rust-analyzer"] = {
+      imports = {
+        granularity = {
+          group = "module",
+        },
+        prefix = "self",
+      },
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = true
+      },
+    }
   }
 })
 
