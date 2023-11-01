@@ -132,6 +132,7 @@ require('lazy').setup({
   { 'hrsh7th/cmp-path' },
   { 'hrsh7th/cmp-buffer' },
   { 'hrsh7th/vim-vsnip' },
+  { 'rust-lang/rust-analyzer' },
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',               opts = {} },
@@ -534,7 +535,7 @@ local servers = {
   gopls = { filetypes = { 'go' } },
   pyright = { filetypes = { 'py', 'python' } },
   -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
 
   lua_ls = {
     Lua = {
