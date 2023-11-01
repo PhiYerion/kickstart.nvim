@@ -99,7 +99,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -407,7 +407,8 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'toml' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash',
+      'toml' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -467,12 +468,12 @@ vim.defer_fn(function()
         },
       },
     },
-  rainbow = {
-    enable = true,
-    extended_mode = true,
-    max_file_linex = nil,
-  },
-}
+    rainbow = {
+      enable = true,
+      extended_mode = true,
+      max_file_linex = nil,
+    },
+  }
 end, 0)
 
 -- Diagnostics general
@@ -698,13 +699,13 @@ rt.setup({
       rt.inlay_hints.enable()
 
       -- keybinds
-      vim.keymap.set("n", "<leader>rh", rt.hover_actions.hover_actions,
+      vim.keymap.set("n", "<leader>ch", rt.hover_actions.hover_actions,
         { desc = 'Hover actions for rust using rust tools' })
       -- Code action groups
-      vim.keymap.set("n", "<Leader>ra", rt.code_action_group.code_action_group,
+      vim.keymap.set("n", "<Leader>cra", rt.code_action_group.code_action_group,
         { desc = 'code action group / lsp actions / rust actions' })
-      vim.keymap.set("n", "<leader>rd", ':ResutDebuggables<CR>', { desc = 'Debug rust code' })
-      vim.keymap.set("n", "<leader>re", ':RustExpandMacro<CR>', { desc = 'Expand rust macro' })
+      vim.keymap.set("n", "<leader>cd", ':ResutDebuggables<CR>', { desc = 'Debug rust code' })
+      vim.keymap.set("n", "<leader>ce", ':RustExpandMacro<CR>', { desc = 'Expand rust macro' })
     end,
   },
   settings = {
