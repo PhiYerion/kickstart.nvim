@@ -240,6 +240,11 @@ require('lazy').setup({
   { 'navarasu/onedark.nvim' },
   { import = 'kickstart.plugins' },
   { import = 'custom.plugins' },
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
 }, {})
 
 require('onedark').setup {
@@ -499,8 +504,7 @@ local servers = {
   gopls = { filetypes = { 'go' } },
   pyright = { filetypes = { 'py', 'python' } },
   -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
+  html = { filetypes = { 'html', 'twig', 'hbs', 'rust', 'rs' } },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -641,6 +645,10 @@ rt.setup({
       },
     },
   }
+})
+require("typescript-tools").setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
 })
 
 -- https://rust-analyzer.github.io/manual.html#nvim-lsp
