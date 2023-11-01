@@ -276,6 +276,11 @@ require('lazy').setup({
   },
   { import = 'kickstart.plugins' },
   { import = 'custom.plugins' },
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
 }, {})
 
 require('onedark').setup {
@@ -536,7 +541,6 @@ local servers = {
   pyright = { filetypes = { 'py', 'python' } },
   -- tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
-
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -671,6 +675,7 @@ rt.setup({
   },
   settings = {
     ['rust-analyzer'] = {
+      on_attach = on_attach,
       checkOnSave = {
         command = 'clippy',
       },
@@ -679,6 +684,54 @@ rt.setup({
       },
     },
   },
+})
+require("typescript-tools").setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+-- https://rust-analyzer.github.io/manual.html#nvim-lsp
+require 'lspconfig'.rust_analyzer.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    ["rust-analyzer"] = {
+      assist = {
+        expressionFillDefault = "todo",
+      },
+      check = {
+        command = "clippy"
+      },
+      imports = {
+        granularity = {
+          group = "module",
+        },
+        prefix = "self",
+      },
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+        features = "all",
+      },
+      procMacro = {
+        enable = true
+      },
+      completion = {
+        autoimport = {
+          enable = true,
+        }
+      },
+      inlay_hints = {
+        bindingModeHints = {
+          enable = true,
+        },
+        closureCaptureHints = {
+          enable = true,
+        },
+      }
+    }
+  }
 })
 
 
