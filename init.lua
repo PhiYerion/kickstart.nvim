@@ -41,6 +41,9 @@ P.S. You can delete this when you're done too. It's your config now :)
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.opt.list = true
 vim.opt.listchars:append({ tab = '▶ ', space = '·', trail = '•', nbsp = '•', })
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -246,7 +249,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -293,13 +296,15 @@ require('lazy').setup({
       vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
     end,
   },
-  { import = 'kickstart.plugins' },
-  { import = 'custom.plugins' },
   {
     "pmizio/typescript-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {},
   },
+  {
+    'sbdchd/neoformat',
+  },
+  { import = 'kickstart.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 require('onedark').setup {
@@ -410,11 +415,14 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash',
+    ensure_installed = { 'c', 'typescript', 'tsx', 'cpp', 'go', 'lua', 'python', 'vimdoc', 'vim', 'bash',
       'toml' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    autotag = {
+      enable = true,
+    },
+
 
     highlight = { enable = true },
     indent = { enable = true },
@@ -545,6 +553,7 @@ local on_attach = function(_, bufnr)
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+    print('Formatting with ', vim.bo.filetype)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
 end
@@ -577,8 +586,8 @@ local servers = {
   clangd = { filetypes = { 'c', 'cpp', 'c++', '.h', '.hpp' } },
   gopls = { filetypes = { 'go' } },
   pyright = { filetypes = { 'py', 'python' } },
-  -- tsserver = {},
-  html = { filetypes = { 'html', 'twig', 'hbs' } },
+  tsserver = { filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' } },
+  html = { filetypes = { 'html', 'twig', 'hbs', 'typescript', 'javascript', "typescriptreact", 'javascriptreact' } },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -684,16 +693,15 @@ cmp.setup {
   },
 }
 
-local rt = require("rust-tools")
 
-rt.setup({
+require("rust-tools").setup({
   tools = {
     runnables = {
       use_telescope = true,
     },
     inlay_hints = {
-      auto = true,
       show_parameter_hints = true,
+      auto = true,
     },
   },
   server = {
@@ -723,15 +731,19 @@ rt.setup({
     },
   },
 })
+
+
 require("typescript-tools").setup({
   on_attach = on_attach,
   capabilities = capabilities,
 })
 
+
 -- https://rust-analyzer.github.io/manual.html#nvim-lsp
 require 'lspconfig'.rust_analyzer.setup({
   on_attach = on_attach,
   capabilities = capabilities,
+  filetypes = { "rust" },
   settings = {
     ["rust-analyzer"] = {
       assist = {

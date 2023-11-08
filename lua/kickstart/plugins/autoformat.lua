@@ -46,9 +46,10 @@ return {
 
         -- Tsserver usually works poorly. Sorry you work with bad languages
         -- You can remove this line if you know what you're doing :)
-        if client.name == 'tsserver' then
+        --[[ if client.name == 'tsserver' then
           return
-        end
+        end ]]
+
 
         -- Create an autocmd that will run *before* we save the buffer.
         --  Run the formatting command for the LSP that has just attached.
@@ -57,6 +58,10 @@ return {
           buffer = bufnr,
           callback = function()
             if not format_is_enabled then
+              return
+            end
+            if vim.bo.filetype == 'typescriptreact' then
+              vim.cmd('silent! Neoformat')
               return
             end
 
