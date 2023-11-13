@@ -62,6 +62,7 @@ return {
             end
             if vim.bo.filetype == 'typescriptreact' then
               vim.cmd('silent! Neoformat')
+              return
             end
 
             vim.lsp.buf.format {
