@@ -694,7 +694,9 @@ cmp.setup {
 }
 
 
-require("rust-tools").setup({
+
+local rt = require("rust-tools");
+rt.setup({
   tools = {
     runnables = {
       use_telescope = true,
@@ -704,10 +706,12 @@ require("rust-tools").setup({
       auto = true,
     },
   },
+  -- https://rust-analyzer.github.io/manual.html#nvim-lsp
   server = {
     on_attach = function(client, bufnr)
       -- set options
       rt.inlay_hints.enable()
+      on_attach(client, bufnr)
 
       -- keybinds
       vim.keymap.set("n", "<leader>ch", rt.hover_actions.hover_actions,
@@ -718,73 +722,52 @@ require("rust-tools").setup({
       vim.keymap.set("n", "<leader>cd", ':ResutDebuggables<CR>', { desc = 'Debug rust code' })
       vim.keymap.set("n", "<leader>ce", ':RustExpandMacro<CR>', { desc = 'Expand rust macro' })
     end,
-  },
-  settings = {
-    ['rust-analyzer'] = {
-      on_attach = on_attach,
-      checkOnSave = {
-        command = 'clippy',
-      },
-      rustfmt = {
-        overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" }
-      },
-    },
+    filetypes = { "rust" },
+    settings = {
+      ["rust-analyzer"] = {
+        assist = {
+          expressionFillDefault = "todo",
+        },
+        check = {
+          command = "clippy"
+        },
+        imports = {
+          granularity = {
+            group = "module",
+          },
+          prefix = "self",
+        },
+        cargo = {
+          buildScripts = {
+            enable = true,
+          },
+          features = "all",
+        },
+        procMacro = {
+          enable = true
+        },
+        completion = {
+          autoimport = {
+            enable = true,
+          }
+        },
+        inlay_hints = {
+          bindingModeHints = {
+            enable = true,
+          },
+          closureCaptureHints = {
+            enable = true,
+          },
+        }
+      }
+    }
   },
 })
-
 
 require("typescript-tools").setup({
   on_attach = on_attach,
   capabilities = capabilities,
 })
-
-
--- https://rust-analyzer.github.io/manual.html#nvim-lsp
-require 'lspconfig'.rust_analyzer.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "rust" },
-  settings = {
-    ["rust-analyzer"] = {
-      assist = {
-        expressionFillDefault = "todo",
-      },
-      check = {
-        command = "clippy"
-      },
-      imports = {
-        granularity = {
-          group = "module",
-        },
-        prefix = "self",
-      },
-      cargo = {
-        buildScripts = {
-          enable = true,
-        },
-        features = "all",
-      },
-      procMacro = {
-        enable = true
-      },
-      completion = {
-        autoimport = {
-          enable = true,
-        }
-      },
-      inlay_hints = {
-        bindingModeHints = {
-          enable = true,
-        },
-        closureCaptureHints = {
-          enable = true,
-        },
-      }
-    }
-  }
-})
-
-
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
