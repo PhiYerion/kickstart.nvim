@@ -9,6 +9,21 @@ vim.opt.completeopt = { 'menuone', 'noselect', 'noinsert' }
 vim.opt.shortmess = vim.opt.shortmess + { c = true }
 vim.api.nvim_set_option('updatetime', 300)
 
+-- Diagnostics general
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  update_in_insert = true,
+  underline = true,
+  severity_sort = false,
+  float = {
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
+})
+
 -- Fixed column for diagnostics to appear
 -- Show autodiagnostic popup on cursor hover_range
 -- Goto previous / next diagnostic warning / error
