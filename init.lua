@@ -39,28 +39,9 @@ P.S. You can delete this when you're done too. It's your config now :)
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
-vim.opt.list = true
-vim.opt.listchars:append({ tab = '▶ ', space = '·', trail = '•', nbsp = '•', })
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.wo.relativenumber = true
-vim.keymap.set('n', '<leader>st', ':Telescope<CR>', { desc = '[S]earch [T]elescope for help. Has keymaps' })
-vim.keymap.set('n', '<leader>nf', ':Neotree float<CR>', { desc = '[N]eotree[O]pen' })
-vim.keymap.set('n', '<leader>nc', ':Neotree close<CR>', { desc = '[N]eotree[C]lose' })
-vim.keymap.set('n', "<leader>ft", ":FloatermNew --name=myfloat --height=0.8 --width=0.7 --autoclose=2 nu <CR> ",
-  { desc = 'create new terminal' })
-vim.keymap.set('n', "t", ":FloatermToggle myfloat<CR>", { desc = 'Toggle terminal' })
-vim.keymap.set('t', "<Esc>", "<C-\\><C-n>:q<CR>")
-
-
 require('opts')
-
-vim.o.shell = "/bin/bash"
-
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -83,7 +64,6 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
-  'neotree',
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
@@ -132,16 +112,9 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-  { 'hrsh7th/cmp-nvim-lua' },
-  { 'hrsh7th/cmp-nvim-lsp-signature-help' },
-  { 'hrsh7th/cmp-vsnip' },
-  { 'hrsh7th/cmp-path' },
-  { 'hrsh7th/cmp-buffer' },
-  { 'hrsh7th/vim-vsnip' },
-  { 'rust-lang/rust-analyzer' },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',               opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -187,7 +160,12 @@ require('lazy').setup({
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'onedark'
+      require('onedark').setup {
+        style = 'deep'
+      }
+      require('onedark').load()
     end,
+
   },
 
   {
@@ -258,59 +236,9 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  { 'nvim-lua/popup.nvim' },
-  { 'navarasu/onedark.nvim' },
-  {
-    'kylechui/nvim-surround',
-    tag = "main",
-    config = function()
-      require('nvim-surround').setup()
-    end,
-  },
-  {
-    'm4xshen/autoclose.nvim',
-    config = function()
-      require('autoclose').setup()
-    end,
-  },
-  {
-    'f-person/git-blame.nvim',
-    config = function()
-      require('gitblame').setup()
-      vim.g.gitblame_use_blame_commit_file_urls = true
-      vim.keymap.set('n', "<leader>gbt", ":GitBlameToggle<CR>", { desc = 'Toggle git blame' })
-      vim.keymap.set('n', "<leader>gbt", ":GitBlameOpenCommitURL<CR>", { desc = 'Open git blame comment' })
-    end,
-  },
-  {
-    "ggandor/leap.nvim",
-    config = function()
-      local leap = require('leap')
-      leap.add_default_mappings()
-    end,
-  },
-  {
-    'github/copilot.vim',
-    config = function()
-      vim.g.copilot_no_tab_map = true
-      vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-    end,
-  },
-  {
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-  },
-  {
-    'sbdchd/neoformat',
-  },
   { import = 'kickstart.plugins' },
   { import = 'custom.plugins' },
 }, {})
-
-require('onedark').setup {
-  style = 'deep'
-}
-require('onedark').load()
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -486,25 +414,6 @@ vim.defer_fn(function()
     },
   }
 end, 0)
-
--- Diagnostics general
-vim.diagnostic.config({
-  virtual_text = false,
-  signs = true,
-  update_in_insert = true,
-  underline = true,
-  severity_sort = false,
-  float = {
-    border = 'rounded',
-    source = 'always',
-    header = '',
-    prefix = '',
-  },
-})
-vim.cmd([[
-  set signcolumn=yes
-  autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -693,81 +602,7 @@ cmp.setup {
   },
 }
 
-
-
-local rt = require("rust-tools");
-rt.setup({
-  tools = {
-    runnables = {
-      use_telescope = true,
-    },
-    inlay_hints = {
-      show_parameter_hints = true,
-      auto = true,
-    },
-  },
-  -- https://rust-analyzer.github.io/manual.html#nvim-lsp
-  server = {
-    on_attach = function(client, bufnr)
-      -- set options
-      rt.inlay_hints.enable()
-      on_attach(client, bufnr)
-
-      -- keybinds
-      vim.keymap.set("n", "<leader>ch", rt.hover_actions.hover_actions,
-        { desc = 'Hover actions for rust using rust tools' })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>cra", rt.code_action_group.code_action_group,
-        { desc = 'code action group / lsp actions / rust actions' })
-      vim.keymap.set("n", "<leader>cd", ':ResutDebuggables<CR>', { desc = 'Debug rust code' })
-      vim.keymap.set("n", "<leader>ce", ':RustExpandMacro<CR>', { desc = 'Expand rust macro' })
-    end,
-    filetypes = { "rust" },
-    settings = {
-      ["rust-analyzer"] = {
-        assist = {
-          expressionFillDefault = "todo",
-        },
-        check = {
-          command = "clippy"
-        },
-        imports = {
-          granularity = {
-            group = "module",
-          },
-          prefix = "self",
-        },
-        cargo = {
-          buildScripts = {
-            enable = true,
-          },
-          features = "all",
-        },
-        procMacro = {
-          enable = true
-        },
-        completion = {
-          autoimport = {
-            enable = true,
-          }
-        },
-        inlay_hints = {
-          bindingModeHints = {
-            enable = true,
-          },
-          closureCaptureHints = {
-            enable = true,
-          },
-        }
-      }
-    }
-  },
-})
-
-require("typescript-tools").setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
+require('rust-tools').setup()
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
