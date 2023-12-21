@@ -1,4 +1,2 @@
 #!/bin/bash
-[ -n "$1" ] && file=$1
-nvim --server ~/.cache/nvim/godot.pipe --remote-send ':e '"$file"'<CR>'
-st nvim --listen ~/.cache/nvim/godot.pipe "$file"
+st nvim --server /tmp/godot.pipe --remote "$1"
