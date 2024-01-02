@@ -16,6 +16,7 @@ return {
       -- https://rust-analyzer.github.io/manual.html#nvim-lsp
       server = {
         on_attach = function(client, bufnr)
+          local rt = require('rust-tools')
           -- set options
           rt.inlay_hints.enable()
           on_attach(client, bufnr)
