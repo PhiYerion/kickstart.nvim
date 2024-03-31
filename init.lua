@@ -586,7 +586,7 @@ local servers = {
   gopls = { filetypes = { 'go' } },
   pyright = { filetypes = { 'py', 'python' } },
   tsserver = { filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' } },
-  html = { filetypes = { 'html', 'twig', 'hbs', 'typescript', 'javascript', "typescriptreact", 'javascriptreact' } },
+  html = { filetypes = { 'html' } },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -613,7 +613,11 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require('lspconfig')[server_name].setup {
+    local server = require('lspconfig')[server_name]
+    if not server.setup then
+      return
+    end
+    server.setup {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = servers[server_name],
