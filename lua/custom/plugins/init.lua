@@ -3,7 +3,6 @@
 --
 -- See the kickstart.nvim README for more information
 
-
 vim.keymap.set('n', '<leader>e', ':Explore<CR>', { desc = 'Use builtin file directory explorer' })
 vim.keymap.set('n', '<leader>gg', ':Git<CR>', { desc = 'Default git menu' })
 vim.keymap.set('n', '<leader>ga', ':Git add<CR>', { desc = 'Add git file' })
@@ -19,5 +18,6 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Go to window below left' })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Go to window above' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Go to window right' })
 vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Quit window' })
+vim.keymap.set('n', '<leader>nf', ':Neotree<CR>', { desc = 'Quit window' })
 
 return {}
