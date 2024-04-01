@@ -20,4 +20,4 @@ vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Go to window above' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Go to window right' })
 vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Quit window' })
 
-return {} 
+return {}
