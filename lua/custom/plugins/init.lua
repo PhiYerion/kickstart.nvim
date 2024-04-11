@@ -18,6 +18,9 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Go to window below left' })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Go to window above' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Go to window right' })
 vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Quit window' })
-vim.keymap.set('n', '<leader>nf', ':Neotree<CR>', { desc = 'Quit window' })
+vim.keymap.set('n', '<leader>st', ':Telescope<CR>', { desc = '[S]earch [T]elescope for help. Has keymaps' })
+vim.keymap.set('n', '<leader>nf', ':Neotree float toggle<CR>', { desc = '[N]eotree[O]pen' })
+vim.keymap.set('t', "<Esc>", "<C-\\><C-n>:q<CR>")
+vim.opt.textwidth = 80
 
 return {}

@@ -34,15 +34,11 @@ vim.cmd([[
 ]])
 
 vim.opt.list = true
-vim.opt.listchars:append({ tab = '▶ ', space = '·', trail = '•', nbsp = '•', })
+vim.opt.listchars = { tab = '» ', trail = '•', nbsp = '␣', space = '⋅' }
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
-vim.wo.relativenumber = true
-vim.keymap.set('n', '<leader>st', ':Telescope<CR>', { desc = '[S]earch [T]elescope for help. Has keymaps' })
-vim.keymap.set('n', '<leader>nf', ':Neotree float<CR>', { desc = '[N]eotree[O]pen' })
-vim.keymap.set('n', '<leader>nc', ':Neotree close<CR>', { desc = '[N]eotree[C]lose' })
-vim.keymap.set('t', "<Esc>", "<C-\\><C-n>:q<CR>")
+vim.opt.relativenumber = true
 
 vim.o.shell = "/bin/bash"
