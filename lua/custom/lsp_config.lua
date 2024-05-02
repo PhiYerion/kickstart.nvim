@@ -1,6 +1,5 @@
 local module = {}
 
--- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 module.on_attach = function(_, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -45,8 +44,5 @@ module.on_attach = function(_, bufnr)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
 end
-
-module.capabilities = vim.lsp.protocol.make_client_capabilities()
-module.capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 return module

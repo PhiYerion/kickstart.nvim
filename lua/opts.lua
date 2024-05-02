@@ -42,3 +42,5 @@ vim.opt.expandtab = true
 vim.opt.relativenumber = true
 
 vim.o.shell = "/bin/bash"
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.listchars = { tab = '» ', trail = '•', nbsp = '␣', space = '⋅' }

@@ -1,9 +1,12 @@
+local on_attach = require('custom.lsp_config').on_attach
+local capabilities = require('custom.lsp_config').capabilities
+
 return {
   'simrat39/rust-tools.nvim',
   filetypes = { 'rust', 'rs', 'toml' },
   dependencies = 'neovim/nvim-lspconfig',
-  on_attach = function(client, bufnr)
-    require('rust-tools').setup({
+  config = function()
+    require('rust-tools').setup {
       tools = {
         runnables = {
           use_telescope = true,
@@ -15,49 +18,49 @@ return {
       },
       -- https://rust-analyzer.github.io/manual.html#nvim-lsp
       server = {
+        capabilities = capabilities,
         on_attach = function(client, bufnr)
-          local rt = require('rust-tools')
-          -- set options
-          rt.inlay_hints.enable()
           on_attach(client, bufnr)
 
+          local rt = require 'rust-tools'
+
+          -- set options
+          rt.inlay_hints.enable()
           -- keybinds
-          vim.keymap.set("n", "<leader>ch", rt.hover_actions.hover_actions,
-            { desc = 'Hover actions for rust using rust tools' })
+          vim.keymap.set('n', '<leader>ch', rt.hover_actions.hover_actions, { desc = 'Hover actions for rust using rust tools' })
           -- Code action groups
-          vim.keymap.set("n", "<Leader>cra", rt.code_action_group.code_action_group,
-            { desc = 'code action group / lsp actions / rust actions' })
-          vim.keymap.set("n", "<leader>cd", ':ResutDebuggables<CR>', { desc = 'Debug rust code' })
-          vim.keymap.set("n", "<leader>ce", ':RustExpandMacro<CR>', { desc = 'Expand rust macro' })
+          vim.keymap.set('n', '<Leader>cra', rt.code_action_group.code_action_group, { desc = 'code action group / lsp actions / rust actions' })
+          vim.keymap.set('n', '<leader>cd', ':ResutDebuggables<CR>', { desc = 'Debug rust code' })
+          vim.keymap.set('n', '<leader>ce', ':RustExpandMacro<CR>', { desc = 'Expand rust macro' })
         end,
-        filetypes = { "rust" },
+        filetypes = { 'rust' },
         settings = {
-          ["rust-analyzer"] = {
+          ['rust-analyzer'] = {
             assist = {
-              expressionFillDefault = "todo",
+              expressionFillDefault = 'todo',
             },
             check = {
-              command = "clippy"
+              command = 'clippy',
             },
             imports = {
               granularity = {
-                group = "module",
+                group = 'module',
               },
-              prefix = "self",
+              prefix = 'self',
             },
             cargo = {
               buildScripts = {
                 enable = true,
               },
-              features = "all",
+              features = 'all',
             },
             procMacro = {
-              enable = true
+              enable = true,
             },
             completion = {
               autoimport = {
                 enable = true,
-              }
+              },
             },
             inlay_hints = {
               bindingModeHints = {
@@ -66,10 +69,10 @@ return {
               closureCaptureHints = {
                 enable = true,
               },
-            }
-          }
-        }
-      }
-    })
+            },
+          },
+        },
+      },
+    }
   end,
 }
