@@ -10,13 +10,13 @@ return {
     'github/copilot.vim',
     config = function()
       vim.g.copilot_no_tab_map = true
-      vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+      vim.api.nvim_set_keymap('i', '<C-J>', 'copilot#Accept("<CR>")', { silent = true, expr = true })
     end,
   },
   { 'nvim-lua/popup.nvim' },
   {
     'kylechui/nvim-surround',
-    tag = "main",
+    tag = 'main',
     config = function()
       require('nvim-surround').setup()
     end,
@@ -28,10 +28,11 @@ return {
     end,
   },
   {
-    "ggandor/leap.nvim",
+    'ggandor/leap.nvim',
     config = function()
-      local leap = require('leap')
-      leap.add_default_mappings()
+      vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
+      vim.keymap.set({ 'n', 'x', 'o' }, 'S', '<Plug>(leap-backward)')
+      vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
     end,
   },
 }
